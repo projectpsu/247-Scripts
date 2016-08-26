@@ -1,31 +1,27 @@
-(function () {
+function loadScript(url, callback) {
 
-    function loadScript(url, callback) {
+	var script = document.createElement("script")
+	script.type = "text/javascript";
 
-        var script = document.createElement("script")
-        script.type = "text/javascript";
+		script.onload = function () {
+			callback();
+		};
 
-            script.onload = function () {
-                callback();
-            };
+	script.src = url;
+	document.getElementsByTagName("head")[0].appendChild(script);
+}
 
-        script.src = url;
-        document.getElementsByTagName("head")[0].appendChild(script);
-    }
-	
-	if (window.jQuery) {
-		runMain();
-	} else {
-		loadScript("https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js", function () {
-			 //jQuery loaded
-			 runMain();
-		});
-	}
+if (window.jQuery) {
+	runMain();
+} else {
+	loadScript("https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js", function () {
+		 //jQuery loaded
+		 runMain();
+	});
+}
 
 
-})();
-
-var getContentGalleryPathName = function (path, type) {
+function getContentGalleryPathName (path, type) {
 	var splitpath = path.split('/');
 	var loc = -1;
 	for (var i = 0; i < splitpath.length; i++) {
@@ -40,7 +36,7 @@ var getContentGalleryPathName = function (path, type) {
 	return splitpath.join('/');
 }
 
-var getContentGalleryUrl = function (type) {
+function getContentGalleryUrl (type) {
 	var newPathName = getContentGalleryPathName(window.location.pathname, type);
 	var parser = document.createElement('a');
 	parser.href = window.location.href;
@@ -49,17 +45,17 @@ var getContentGalleryUrl = function (type) {
 	return parser.href;
 }
 
-var checkNull = function (value) {
+function checkNull (value) {
 	return !value ? '' : value
 }
 
-var getFullImageFromThumb = function (path) {
+function getFullImageFromThumb (path) {
 	var splitpath = path.split('/');
 	splitpath[splitpath.length - 1] = splitpath[splitpath.length - 1].split('_').pop();
 	return splitpath.join('/')
 }
 
-var addSlides = function () {
+function addSlides () {
 	var $d = $('div[data-slides]').first();
 	var $j = $.parseJSON($d.attr('data-slides'));
 	//var n = parseInt($('span.slidetotal').text());
