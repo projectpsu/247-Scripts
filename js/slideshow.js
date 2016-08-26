@@ -1,3 +1,29 @@
+(function () {
+
+    function loadScript(url, callback) {
+
+        var script = document.createElement("script")
+        script.type = "text/javascript";
+
+            script.onload = function () {
+                callback();
+            };
+
+        script.src = url;
+        document.getElementsByTagName("head")[0].appendChild(script);
+    }
+	
+	if (window.jQuery) {
+		runMain();
+	} else {
+		loadScript("https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js", function () {
+			 //jQuery loaded
+			 runMain();
+		});
+	}
+
+
+})();
 
 var getContentGalleryPathName = function (path, type) {
 	var splitpath = path.split('/');
@@ -60,17 +86,20 @@ var addSlides = function () {
 	}
 }
 
-var $datatype = $('article.content.article').first().attr('data-type');
+function runMain() {
 
-if ($datatype == 'contentgallery') {
+	var $datatype = $('article.content.article').first().attr('data-type');
 
-	addSlides();
+	if ($datatype == 'contentgallery') {
 
-} else if ($datatype == 'gallery') {
+		addSlides();
 
-	var n = $('div.photogroup').find('a').length;
-	var contentGalleryUrl = getContentGalleryUrl($datatype);
-	var $curelem = $('div.article-container.loaded.active').find('div.hidden').first().load(contentGalleryUrl + 
-		' div[data-slides]', addSlides);
+	} else if ($datatype == 'gallery') {
 
+		var n = $('div.photogroup').find('a').length;
+		var contentGalleryUrl = getContentGalleryUrl($datatype);
+		var $curelem = $('div.article-container.loaded.active').find('div.hidden').first().load(contentGalleryUrl + 
+			' div[data-slides]', addSlides);
+
+	}
 }
